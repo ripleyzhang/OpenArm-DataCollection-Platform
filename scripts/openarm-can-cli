@@ -1,0 +1,95 @@
+#!/usr/bin/env python3
+import json
+import subprocess
+import sys
+from datetime import datetime, timezone
+from pathlib import Path
+
+STATE_DIR = Path("mock_state")
+STATE_DIR.mkdir(exist_ok=True)
+
+# check the network card is currently "UP"
+def iface_up(iface: str) -> bool:
+    try:
+        out = subprocess.check_output(
+                ["ip", "-details", "link", "show", iface],
+                text=True,
+                stderr=subprocess.STDOUT,
+                )
+        return "UP" in out
+    except subprocess.CalledProcessError:
+        return False
+
+# save the status data of iface to a JSON file supporting incremental updates
+def save_state(iface: str, update: dict):
+    path = STATE_DIR / f"{iface}.json"
+    data = {}
+    if path.exists():
+        data = json.loads(path.read_text())
+    data.update(update)
+    path.write_text(json.dumps(data, indent=2))
+
+def main():
+    if len(sys.argv) != 3:
+        print("Usage: openarm-can-cli <can_configure|zero|status> <can0|can1>")
+        sys.exit(1)
+
+    cmd, iface = sys.argv[1], sys.argv[2]
+
+    if iface not in {"can0", "can1"}:
+        print(f"ERROR: unsupported interface {iface}")
+        sys.exit(2)
+
+    if cmd == "can_configure":
+        if not iface_up(iface):
+            print(f"ERROR: {iface} is not UP")
+            sys.exit(3)
+
+        save_state(iface, {
+            "mode": "MOCK",
+            "interface": iface,
+            "configured": True,
+            "can_fd": True,
+            "nominal_bitrate": 1000000,
+            "data_bitrate": 5000000,
+            "configured_at": datetime.now(timezone.utc).isoformat(),
+        })
+
+        print(f"[MOCK MODE] openarm-can-cli can_configure {iface}")
+        print(f"[OK] {iface} is UP")
+        print("[OK] CAN-FD configuration simulated")
+        print("[OK] nominal_bitrate=1000000")
+        print("[OK] data_bitrate=5000000")
+        print("[NOTE] vcan does not validate physical CAN-FD timing")
+        return
+
+    if cmd == "zero":
+        if not iface_up(iface):
+            print(f"ERROR: {iface} is not UP")
+            sys.exit(3)
+
+        save_state(iface, {
+            "zero_position_set": True,
+            "zero_position_source": "mock_current_joint_positions",
+            "zero_set_at": datetime.now(timezone.utc).isoformat(),
+        })
+
+        print(f"[MOCK MODE] openarm-can-cli zero {iface}")
+        print(f"[OK] Zero position simulated for {iface}")
+        print("[NOTE] No physical Damiao motor zero position was written")
+        return
+
+    if cmd == "status":
+        path = STATE_DIR / f"{iface}.json"
+        if not path.exists():
+            print(f"[MOCK MODE] No mock state found for {iface}")
+            sys.exit(4)
+        print(path.read_text())
+        return
+
+    print(f"ERROR: unknown command {cmd}")
+    sys.exit(5)
+
+if __name__ == "__main__":
+    main()
+

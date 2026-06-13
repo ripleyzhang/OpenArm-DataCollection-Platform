@@ -1,0 +1,12 @@
+{
+  "mode": "MOCK",
+  "interface": "can0",
+  "configured": true,
+  "can_fd": true,
+  "nominal_bitrate": 1000000,
+  "data_bitrate": 5000000,
+  "configured_at": "2026-06-13T17:56:58.203722+00:00",
+  "zero_position_set": true,
+  "zero_position_source": "mock_current_joint_positions",
+  "zero_set_at": "2026-06-13T17:56:58.270362+00:00"
+}

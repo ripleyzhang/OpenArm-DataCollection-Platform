@@ -1,0 +1,62 @@
+===== Task 1 Mock Verification =====
+2026-06-13T13:56:36-04:00
+
+===== Reset virtual CAN interfaces =====
+
+===== Interface status after vcan setup =====
+5: can0: <NOARP,UP,LOWER_UP> mtu 72 qdisc noqueue state UNKNOWN mode DEFAULT group default qlen 1000
+    link/can  promiscuity 0 minmtu 0 maxmtu 0 
+    vcan numtxqueues 1 numrxqueues 1 gso_max_size 65536 gso_max_segs 65535 
+6: can1: <NOARP,UP,LOWER_UP> mtu 72 qdisc noqueue state UNKNOWN mode DEFAULT group default qlen 1000
+    link/can  promiscuity 0 minmtu 0 maxmtu 0 
+    vcan numtxqueues 1 numrxqueues 1 gso_max_size 65536 gso_max_segs 65535 
+
+===== Mock OpenArm CAN-FD configuration =====
+[MOCK MODE] openarm-can-cli can_configure can0
+[OK] can0 is UP
+[OK] CAN-FD configuration simulated
+[OK] nominal_bitrate=1000000
+[OK] data_bitrate=5000000
+[NOTE] vcan does not validate physical CAN-FD timing
+[MOCK MODE] openarm-can-cli can_configure can1
+[OK] can1 is UP
+[OK] CAN-FD configuration simulated
+[OK] nominal_bitrate=1000000
+[OK] data_bitrate=5000000
+[NOTE] vcan does not validate physical CAN-FD timing
+
+===== Mock zero position =====
+[MOCK MODE] openarm-can-cli zero can0
+[OK] Zero position simulated for can0
+[NOTE] No physical Damiao motor zero position was written
+[MOCK MODE] openarm-can-cli zero can1
+[OK] Zero position simulated for can1
+[NOTE] No physical Damiao motor zero position was written
+
+===== Mock state =====
+{
+  "mode": "MOCK",
+  "interface": "can0",
+  "configured": true,
+  "can_fd": true,
+  "nominal_bitrate": 1000000,
+  "data_bitrate": 5000000,
+  "configured_at": "2026-06-13T17:56:58.203722+00:00",
+  "zero_position_set": true,
+  "zero_position_source": "mock_current_joint_positions",
+  "zero_set_at": "2026-06-13T17:56:58.270362+00:00"
+}
+{
+  "mode": "MOCK",
+  "interface": "can1",
+  "configured": true,
+  "can_fd": true,
+  "nominal_bitrate": 1000000,
+  "data_bitrate": 5000000,
+  "configured_at": "2026-06-13T17:56:58.237849+00:00",
+  "zero_position_set": true,
+  "zero_position_source": "mock_current_joint_positions",
+  "zero_set_at": "2026-06-13T17:56:58.296943+00:00"
+}
+
+===== Task 1 mock verification completed =====
