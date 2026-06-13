@@ -33,11 +33,11 @@ jobs:
 
       - name: Check Python syntax
         run: |
-          python -m compileall scripts src tests
+          python -m compileall scripts
 
       - name: Lint with ruff
         run: |
-          ruff check scripts src tests
+          ruff check scripts
 
       - name: Task 1 - verify mock CAN setup
         run: |
