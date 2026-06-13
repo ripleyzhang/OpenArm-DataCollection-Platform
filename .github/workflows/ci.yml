@@ -26,6 +26,9 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y can-utils iproute2 kmod
 
+          sudo apt-get install -y "linux-modules-extra-$(uname -r)" || true
+          sudo modprobe vcan
+
       - name: Install Python dependencies
         run: |
           python -m pip install --upgrade pip
