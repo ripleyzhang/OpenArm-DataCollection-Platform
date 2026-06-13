@@ -26,24 +26,11 @@ ip -details link show can1
 ### Mock procedure
 Because I do not have physical OpenArm hardware or a USB-CAN FD adapter, I implemented Task 1 in mock mode using Linux virtual CAN interfaces.
 
-Commands:
-```bash
-sudo modprobe vcan
+## Task 2 
+### Real hardware procedure
 
-sudo ip link add dev can0 type vcan
-sudo ip link add dev can1 type vcan
+Damiao motors -> CAN-FD -> SocketCAN can0/can1 -> openarm_can -> joint states
 
-sudo ip link set can0 up
-sudo ip link set can1 up
+### Mock
 
-openarm-can-cli can_configure can0
-openarm-can-cli can_configure can1
-
-openarm-can-cli zero can0
-openarm-can-cli zero can1
-
-ip -details link show can0
-ip -details link show can1
-openarm-can-cli status can0
-openarm-can-cli status can1
-```
+mock_damiao_stream.py -> vcan can0/can1 -> read_joint_states.py -> joint states

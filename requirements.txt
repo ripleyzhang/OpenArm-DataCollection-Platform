@@ -1,0 +1,17 @@
+# CAN / SocketCAN
+python-can==4.4.2
+
+# API backend
+fastapi==0.115.6
+uvicorn[standard]==0.34.0
+
+# Testing
+pytest==8.3.4
+httpx==0.28.1
+
+# Data / simulation
+numpy==2.2.1
+pillow==11.1.0
+
+# Code quality
+ruff==0.8.6

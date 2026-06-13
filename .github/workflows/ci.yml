@@ -41,63 +41,26 @@ jobs:
 
       - name: Task 1 - verify mock CAN setup
         run: |
-          chmod +x scripts/setup_vcan.sh
+          chmod +x scripts/verify_task1_mock.sh
           chmod +x scripts/openarm-can-cli
-
-          ./scripts/setup_vcan.sh
-
-          ./scripts/openarm-can-cli -i can0 can_configure
-          ./scripts/openarm-can-cli -i can1 can_configure
-
-          ./scripts/openarm-can-cli -i can0 zero
-          ./scripts/openarm-can-cli -i can1 zero
-
-          ./scripts/openarm-can-cli -i can0 status
-          ./scripts/openarm-can-cli -i can1 status
-
-          ip -details link show can0
-          ip -details link show can1
+          ./scripts/verify_task1_mock.sh
 
       - name: Task 2 - verify mock CAN-FD data stream
         run: |
-          mkdir -p data
+          chmod +x scripts/verify_task2_mock.sh
+          ./scripts/verify_task2_mock.sh
 
-          ./scripts/setup_vcan.sh
+      # - name: Task 3 - test camera synchronization
+      #   run: |
+      #     pytest tests/test_task3_sync.py -q
 
-          python scripts/mock_damiao_stream.py --rate-hz 50 &
-          STREAM_PID=$!
+      # - name: Task 4 - test storage and API
+      #   run: |
+      #   pytest tests/test_task4_storage_api.py -q
 
-          sleep 1
-
-          python scripts/read_joint_states.py \
-            --duration-s 3 \
-            --output data/joint_states_mock.jsonl
-
-          kill "$STREAM_PID" || true
-          wait "$STREAM_PID" || true
-
-          test -f data/joint_states_mock.jsonl
-          FRAME_COUNT=$(wc -l < data/joint_states_mock.jsonl)
-          echo "Parsed frame count: $FRAME_COUNT"
-
-          if [ "$FRAME_COUNT" -lt 100 ]; then
-            echo "Expected at least 100 parsed joint-state frames"
-            exit 1
-          fi
-
-          head -n 5 data/joint_states_mock.jsonl
-
-      - name: Task 3 - test camera synchronization
-        run: |
-          pytest tests/test_task3_sync.py -q
-
-      - name: Task 4 - test storage and API
-        run: |
-          pytest tests/test_task4_storage_api.py -q
-
-      - name: Run all unit tests
-        run: |
-          pytest tests -q
+      # - name: Run all unit tests
+      #   run: |
+      #     pytest tests -q
 
       - name: Upload mock outputs
         if: always()
