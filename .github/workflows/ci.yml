@@ -43,12 +43,12 @@ jobs:
         run: |
           chmod +x scripts/verify_task1_mock.sh
           chmod +x scripts/openarm-can-cli
-          ./scripts/verify_task1_mock.sh
+          ../../scripts/verify_task1_mock.sh
 
       - name: Task 2 - verify mock CAN-FD data stream
         run: |
           chmod +x scripts/verify_task2_mock.sh
-          ./scripts/verify_task2_mock.sh
+          ../../scripts/verify_task2_mock.sh
 
       # - name: Task 3 - test camera synchronization
       #   run: |
