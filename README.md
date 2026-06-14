@@ -12,7 +12,10 @@ Implemented files:
 scripts/verify_task1_mock.sh
 scripts/openarm-can-cli
 
-![Terminal screenshot](./artifacts/terminal.png)
+Teminal screenshot address: 
+```bash
+./artifacts/terminal.png
+```
 
 The platform configures two Linux SocketCAN interfaces: can0 for left arm and can1 for right arm.
 
