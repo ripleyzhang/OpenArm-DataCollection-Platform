@@ -1,0 +1,16 @@
+# Generated mock data
+data/openarm_mock_dataset/
+data/joint_states_mock.jsonl
+
+# Python cache
+__pycache__/
+*.pyc
+.pytest_cache/
+.ruff_cache/
+
+# Virtual env
+venv/
+.venv/
+
+# macOS
+.DS_Store
