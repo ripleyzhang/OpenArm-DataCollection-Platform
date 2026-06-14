@@ -1,0 +1,323 @@
+===== Task 3 Mock Verification: Multi-camera synchronization =====
+2026-06-13T20:13:05-04:00
+
+===== Run Task 2 mock to generate joint states =====
+===== Task 2 Mock Verification: CAN-FD Data Stream =====
+2026-06-13T20:13:05-04:00
+
+===== Reuse Task 1 mock CAN setup =====
+===== Task 1 Mock Verification =====
+2026-06-13T20:13:05-04:00
+
+===== Reset virtual CAN interfaces =====
+
+===== Interface status after vcan setup =====
+19: can0: <NOARP,UP,LOWER_UP> mtu 72 qdisc noqueue state UNKNOWN mode DEFAULT group default qlen 1000
+    link/can  promiscuity 0 minmtu 0 maxmtu 0 
+    vcan numtxqueues 1 numrxqueues 1 gso_max_size 65536 gso_max_segs 65535 
+20: can1: <NOARP,UP,LOWER_UP> mtu 72 qdisc noqueue state UNKNOWN mode DEFAULT group default qlen 1000
+    link/can  promiscuity 0 minmtu 0 maxmtu 0 
+    vcan numtxqueues 1 numrxqueues 1 gso_max_size 65536 gso_max_segs 65535 
+
+===== Mock OpenArm CAN-FD configuration =====
+[MOCK MODE] openarm-can-cli can_configure can0
+[OK] can0 is UP
+[OK] CAN-FD configuration simulated
+[OK] nominal_bitrate=1000000
+[OK] data_bitrate=5000000
+[NOTE] vcan does not validate physical CAN-FD timing
+[MOCK MODE] openarm-can-cli can_configure can1
+[OK] can1 is UP
+[OK] CAN-FD configuration simulated
+[OK] nominal_bitrate=1000000
+[OK] data_bitrate=5000000
+[NOTE] vcan does not validate physical CAN-FD timing
+
+===== Mock zero position =====
+[MOCK MODE] openarm-can-cli zero can0
+[OK] Zero position simulated for can0
+[NOTE] No physical Damiao motor zero position was written
+[MOCK MODE] openarm-can-cli zero can1
+[OK] Zero position simulated for can1
+[NOTE] No physical Damiao motor zero position was written
+
+===== Mock state =====
+{
+  "mode": "MOCK",
+  "interface": "can0",
+  "configured": true,
+  "can_fd": true,
+  "nominal_bitrate": 1000000,
+  "data_bitrate": 5000000,
+  "configured_at": "2026-06-14T00:13:05.866232+00:00",
+  "zero_position_set": true,
+  "zero_position_source": "mock_current_joint_positions",
+  "zero_set_at": "2026-06-14T00:13:05.926745+00:00"
+}
+{
+  "mode": "MOCK",
+  "interface": "can1",
+  "configured": true,
+  "can_fd": true,
+  "nominal_bitrate": 1000000,
+  "data_bitrate": 5000000,
+  "configured_at": "2026-06-14T00:13:05.899161+00:00",
+  "zero_position_set": true,
+  "zero_position_source": "mock_current_joint_positions",
+  "zero_set_at": "2026-06-14T00:13:05.951934+00:00"
+}
+
+===== Task 1 mock verification completed =====
+
+===== Start mock Damiao stream =====
+
+===== Read joint states =====
+[MOCK MODE] Reading OpenArm-style joint states from CAN-FD
+[MOCK MODE] interfaces=['can0', 'can1']
+[MOCK MODE] payload_format=<QBBBBfff
+[MOCK MODE] payload_size=24 bytes
+[MOCK MODE] output=data/joint_states_mock.jsonl
+{
+  "host_received_ns": 1781395987097300359,
+  "sensor_timestamp_ns": 1781395987097110753,
+  "interface": "can0",
+  "arm_name": "left",
+  "arm_index": 0,
+  "joint_name": "J1",
+  "joint_index": 1,
+  "sender_can_id": 1,
+  "receiver_can_id": 17,
+  "arbitration_id": 17,
+  "position_rad": 0.9524556398391724,
+  "velocity_rad_s": 0.38286882638931274,
+  "torque_nm": 0.4999769628047943
+}
+{
+  "host_received_ns": 1781395987097374533,
+  "sensor_timestamp_ns": 1781395987097110753,
+  "interface": "can0",
+  "arm_name": "left",
+  "arm_index": 0,
+  "joint_name": "J2",
+  "joint_index": 2,
+  "sender_can_id": 2,
+  "receiver_can_id": 18,
+  "arbitration_id": 18,
+  "position_rad": 0.9991840124130249,
+  "velocity_rad_s": -0.05075478181242943,
+  "torque_nm": 0.4713105261325836
+}
+{
+  "host_received_ns": 1781395987097418998,
+  "sensor_timestamp_ns": 1781395987097110753,
+  "interface": "can0",
+  "arm_name": "left",
+  "arm_index": 0,
+  "joint_name": "J3",
+  "joint_index": 3,
+  "sender_can_id": 3,
+  "receiver_can_id": 19,
+  "arbitration_id": 19,
+  "position_rad": 0.9247567653656006,
+  "velocity_rad_s": -0.47822415828704834,
+  "torque_nm": 0.38549554347991943
+}
+{
+  "host_received_ns": 1781395987097460100,
+  "sensor_timestamp_ns": 1781395987097110753,
+  "interface": "can0",
+  "arm_name": "left",
+  "arm_index": 0,
+  "joint_name": "J4",
+  "joint_index": 4,
+  "sender_can_id": 4,
+  "receiver_can_id": 20,
+  "arbitration_id": 20,
+  "position_rad": 0.7381985187530518,
+  "velocity_rad_s": -0.8477066159248352,
+  "torque_nm": 0.2529374659061432
+}
+{
+  "host_received_ns": 1781395987097493149,
+  "sensor_timestamp_ns": 1781395987097110753,
+  "interface": "can0",
+  "arm_name": "left",
+  "arm_index": 0,
+  "joint_name": "J5",
+  "joint_index": 5,
+  "sender_can_id": 5,
+  "receiver_can_id": 21,
+  "arbitration_id": 21,
+  "position_rad": 0.4621303677558899,
+  "velocity_rad_s": -1.114400863647461,
+  "torque_nm": 0.0897095650434494
+}
+{
+  "host_received_ns": 1781395987097522433,
+  "sensor_timestamp_ns": 1781395987097110753,
+  "interface": "can0",
+  "arm_name": "left",
+  "arm_index": 0,
+  "joint_name": "J6",
+  "joint_index": 6,
+  "sender_can_id": 6,
+  "receiver_can_id": 22,
+  "arbitration_id": 22,
+  "position_rad": 0.13002675771713257,
+  "velocity_rad_s": -1.2459688186645508,
+  "torque_nm": -0.08439604192972183
+}
+{
+  "host_received_ns": 1781395987097554770,
+  "sensor_timestamp_ns": 1781395987097110753,
+  "interface": "can0",
+  "arm_name": "left",
+  "arm_index": 0,
+  "joint_name": "J7",
+  "joint_index": 7,
+  "sender_can_id": 7,
+  "receiver_can_id": 23,
+  "arbitration_id": 23,
+  "position_rad": -0.2178431898355484,
+  "velocity_rad_s": -1.2264573574066162,
+  "torque_nm": -0.2482682317495346
+}
+{
+  "host_received_ns": 1781395987097696178,
+  "sensor_timestamp_ns": 1781395987097110753,
+  "interface": "can0",
+  "arm_name": "left",
+  "arm_index": 0,
+  "joint_name": "J8_gripper",
+  "joint_index": 8,
+  "sender_can_id": 8,
+  "receiver_can_id": 24,
+  "arbitration_id": 24,
+  "position_rad": -0.13482466340065002,
+  "velocity_rad_s": -0.2645581066608429,
+  "torque_nm": -0.11461102962493896
+}
+{
+  "host_received_ns": 1781395987719360342,
+  "sensor_timestamp_ns": 1781395987719172566,
+  "interface": "can0",
+  "arm_name": "left",
+  "arm_index": 0,
+  "joint_name": "J4",
+  "joint_index": 4,
+  "sender_can_id": 4,
+  "receiver_can_id": 20,
+  "arbitration_id": 20,
+  "position_rad": 0.048670269548892975,
+  "velocity_rad_s": -1.2551478147506714,
+  "torque_nm": -0.12433674931526184
+}
+{
+  "host_received_ns": 1781395988341484731,
+  "sensor_timestamp_ns": 1781395988341241781,
+  "interface": "can0",
+  "arm_name": "left",
+  "arm_index": 0,
+  "joint_name": "J8_gripper",
+  "joint_index": 8,
+  "sender_can_id": 8,
+  "receiver_can_id": 24,
+  "arbitration_id": 24,
+  "position_rad": -0.2115171253681183,
+  "velocity_rad_s": 0.16747018694877625,
+  "torque_nm": -0.09761188924312592
+}
+{
+  "host_received_ns": 1781395988963683546,
+  "sensor_timestamp_ns": 1781395988963310570,
+  "interface": "can1",
+  "arm_name": "right",
+  "arm_index": 1,
+  "joint_name": "J4",
+  "joint_index": 4,
+  "sender_can_id": 4,
+  "receiver_can_id": 20,
+  "arbitration_id": 20,
+  "position_rad": -0.1265120506286621,
+  "velocity_rad_s": 1.2465400695800781,
+  "torque_nm": 0.08614207059144974
+}
+{
+  "host_received_ns": 1781395989585880217,
+  "sensor_timestamp_ns": 1781395989585397314,
+  "interface": "can0",
+  "arm_name": "left",
+  "arm_index": 0,
+  "joint_name": "J8_gripper",
+  "joint_index": 8,
+  "sender_can_id": 8,
+  "receiver_can_id": 24,
+  "arbitration_id": 24,
+  "position_rad": 0.13171148300170898,
+  "velocity_rad_s": 0.2670230567455292,
+  "torque_nm": 0.11317435652017593
+}
+
+[MOCK MODE] Finished reading joint states.
+[MOCK MODE] parsed_count=2385
+[MOCK MODE] per_interface_count={'can0': 1193, 'can1': 1192}
+[MOCK MODE] per_arm_count={'left': 1193, 'right': 1192}
+[MOCK MODE] output_file=data/joint_states_mock.jsonl
+
+===== Output preview =====
+{"host_received_ns": 1781395987097300359, "sensor_timestamp_ns": 1781395987097110753, "interface": "can0", "arm_name": "left", "arm_index": 0, "joint_name": "J1", "joint_index": 1, "sender_can_id": 1, "receiver_can_id": 17, "arbitration_id": 17, "position_rad": 0.9524556398391724, "velocity_rad_s": 0.38286882638931274, "torque_nm": 0.4999769628047943}
+{"host_received_ns": 1781395987097374533, "sensor_timestamp_ns": 1781395987097110753, "interface": "can0", "arm_name": "left", "arm_index": 0, "joint_name": "J2", "joint_index": 2, "sender_can_id": 2, "receiver_can_id": 18, "arbitration_id": 18, "position_rad": 0.9991840124130249, "velocity_rad_s": -0.05075478181242943, "torque_nm": 0.4713105261325836}
+{"host_received_ns": 1781395987097418998, "sensor_timestamp_ns": 1781395987097110753, "interface": "can0", "arm_name": "left", "arm_index": 0, "joint_name": "J3", "joint_index": 3, "sender_can_id": 3, "receiver_can_id": 19, "arbitration_id": 19, "position_rad": 0.9247567653656006, "velocity_rad_s": -0.47822415828704834, "torque_nm": 0.38549554347991943}
+{"host_received_ns": 1781395987097460100, "sensor_timestamp_ns": 1781395987097110753, "interface": "can0", "arm_name": "left", "arm_index": 0, "joint_name": "J4", "joint_index": 4, "sender_can_id": 4, "receiver_can_id": 20, "arbitration_id": 20, "position_rad": 0.7381985187530518, "velocity_rad_s": -0.8477066159248352, "torque_nm": 0.2529374659061432}
+{"host_received_ns": 1781395987097493149, "sensor_timestamp_ns": 1781395987097110753, "interface": "can0", "arm_name": "left", "arm_index": 0, "joint_name": "J5", "joint_index": 5, "sender_can_id": 5, "receiver_can_id": 21, "arbitration_id": 21, "position_rad": 0.4621303677558899, "velocity_rad_s": -1.114400863647461, "torque_nm": 0.0897095650434494}
+
+===== Frame count =====
+2385 data/joint_states_mock.jsonl
+
+===== Task 2 mock verification completed =====
+
+===== Stop mock stream =====
+[MOCK MODE] Starting two-arm OpenArm Damiao-style CAN-FD feedback stream
+[MOCK MODE] rate_hz=50.0
+[MOCK MODE] can0 = left arm, 8 motors: J1-J7 + J8_gripper
+[MOCK MODE] can1 = right arm, 8 motors: J1-J7 + J8_gripper
+[MOCK MODE] CAN IDs per bus: sender 0x01-0x08, receiver/master 0x11-0x18
+[MOCK MODE] Press Ctrl+C to stop
+
+[MOCK MODE] Stopped. Sent 3216 CAN-FD feedback frames.
+
+===== Generate OpenArm Dataset-style camera episode =====
+[MOCK MODE] Wrote OpenArm Dataset-style mock episode
+[MOCK MODE] dataset_root=data/openarm_mock_dataset
+[MOCK MODE] episode_id=0
+[MOCK MODE] time_range_ns=(1781395987097110753, 1781395990087038698)
+[MOCK MODE] camera_frame_counts={'wrist_left': 90, 'wrist_right': 90, 'ceiling': 45, 'head': 180}
+
+[MOCK MODE] Next verification:
+  python3 -c "import openarm_dataset; ds=openarm_dataset.Dataset('data/openarm_mock_dataset'); print(ds.num_episodes); print(ds.camera_names); print(ds.sample(30, 0)[0])"
+
+===== Inspect generated dataset tree =====
+data/openarm_mock_dataset
+data/openarm_mock_dataset/episodes
+data/openarm_mock_dataset/episodes/0
+data/openarm_mock_dataset/episodes/0/action
+data/openarm_mock_dataset/episodes/0/action/arms
+data/openarm_mock_dataset/episodes/0/cameras
+data/openarm_mock_dataset/episodes/0/cameras/ceiling
+data/openarm_mock_dataset/episodes/0/cameras/head
+data/openarm_mock_dataset/episodes/0/cameras/wrist_left
+data/openarm_mock_dataset/episodes/0/cameras/wrist_right
+data/openarm_mock_dataset/episodes/0/obs
+data/openarm_mock_dataset/episodes/0/obs/arms
+data/openarm_mock_dataset/episodes/0/cameras/wrist_left/1781395987097110753.jpeg
+data/openarm_mock_dataset/episodes/0/cameras/wrist_left/1781395987130444086.jpeg
+data/openarm_mock_dataset/episodes/0/cameras/wrist_left/1781395987163777419.jpeg
+data/openarm_mock_dataset/episodes/0/cameras/wrist_left/1781395987197110752.jpeg
+data/openarm_mock_dataset/episodes/0/cameras/wrist_left/1781395987230444085.jpeg
+data/openarm_mock_dataset/episodes/0/cameras/wrist_left/1781395987263777418.jpeg
+data/openarm_mock_dataset/episodes/0/cameras/wrist_left/1781395987297110751.jpeg
+data/openarm_mock_dataset/episodes/0/cameras/wrist_left/1781395987330444084.jpeg
+data/openarm_mock_dataset/episodes/0/cameras/wrist_left/1781395987363777417.jpeg
+data/openarm_mock_dataset/episodes/0/cameras/wrist_left/1781395987397110750.jpeg
+data/openarm_mock_dataset/episodes/0/cameras/wrist_left/1781395987430444083.jpeg
+data/openarm_mock_dataset/episodes/0/cameras/wrist_left/1781395987463777416.jpeg

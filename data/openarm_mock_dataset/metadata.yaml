@@ -1,0 +1,44 @@
+version: 0.3.0
+operator: mock_operator
+operation_type: teleop
+location: mock_ubuntu_server_22_04
+tasks:
+- prompt: Mock synchronized OpenArm data collection.
+  description: Synthetic two-arm joint states and four simulated camera streams.
+episodes:
+- id: '0'
+  success: true
+  task_index: 0
+equipment:
+  id: MockOpenArm
+  version: 0.1.0
+  embodiments:
+    arms:
+      id: OpenArm
+      version: '2.0'
+  perceptions:
+    cameras:
+      wrist_left:
+        id: MockCamera
+        fps: 30.0
+        num_frames: 90
+      wrist_right:
+        id: MockCamera
+        fps: 30.0
+        num_frames: 90
+      ceiling:
+        id: MockCamera
+        fps: 15.0
+        num_frames: 45
+      head:
+        id: MockCamera
+        fps: 60.0
+        num_frames: 180
+frequencies:
+  obs: 100
+  action: 100
+  cameras:
+    wrist_left: 30.0
+    wrist_right: 30.0
+    ceiling: 15.0
+    head: 60.0
