@@ -1,0 +1,35 @@
+===== Task 4 Mock Verification: Storage Backend + REST API =====
+2026-06-13T20:47:56-04:00
+
+===== Ensure Task 3 dataset exists =====
+
+===== Verify storage layer directly =====
+dataset_version: 0.3.0
+episode_ids: ['0']
+episode_metadata: {'episode': {'id': '0', 'success': True, 'task_index': 0}, 'episode_id': '0', 'path': 'data/openarm_mock_dataset/episodes/0', 'camera_frame_counts': {'ceiling': 45, 'head': 180, 'wrist_left': 90, 'wrist_right': 90}, 'has_obs': True, 'has_action': True, 'has_cameras': True, 'dataset_version': '0.3.0', 'task': {'prompt': 'Mock synchronized OpenArm data collection.', 'description': 'Synthetic two-arm joint states and four simulated camera streams.'}}
+zip_path: artifacts/episode_0.zip
+zip_size_bytes: 1336789
+
+===== Start API server =====
+
+===== Test API endpoints =====
+INFO:     127.0.0.1:41058 - "GET /health HTTP/1.1" 200 OK
+{"status":"ok","dataset_root":"/home/nz75/OpenArm-DataCollection-Platform/data/openarm_mock_dataset","dataset_exists":true}
+INFO:     127.0.0.1:41066 - "GET /episodes HTTP/1.1" 200 OK
+[{"episode_id":"0","success":true,"task_index":0,"metadata_url":"/episodes/0/metadata","download_url":"/episodes/0/download"}]
+INFO:     127.0.0.1:41074 - "GET /episodes/0/metadata HTTP/1.1" 200 OK
+{"episode":{"id":"0","success":true,"task_index":0},"episode_id":"0","path":"/home/nz75/OpenArm-DataCollection-Platform/data/openarm_mock_dataset/episodes/0","camera_frame_counts":{"ceiling":45,"head":180,"wrist_left":90,"wrist_right":90},"has_obs":true,"has_action":true,"has_cameras":true,"dataset_version":"0.3.0","task":{"prompt":"Mock synchronized OpenArm data collection.","description":"Synthetic two-arm joint states and four simulated camera streams."}}
+INFO:     127.0.0.1:41078 - "GET /episodes/0/download HTTP/1.1" 200 OK
+
+===== Verify downloaded zip =====
+-rw-rw-r-- 1 nz75 nz75 1.3M Jun 13 20:47 /home/nz75/OpenArm-DataCollection-Platform/artifacts/episode_0.zip
+-rw-rw-r-- 1 nz75 nz75 1.3M Jun 13 20:47 /home/nz75/OpenArm-DataCollection-Platform/artifacts/episode_0_from_api.zip
+
+===== Task 4 mock verification completed =====
+
+===== Stop API server =====
+
+===== Cleanup generated dataset =====
+Removed /home/nz75/OpenArm-DataCollection-Platform/data/openarm_mock_dataset
+Removed data/joint_states_mock.jsonl
+Kept artifacts under /home/nz75/OpenArm-DataCollection-Platform/artifacts

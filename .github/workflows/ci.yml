@@ -1,3 +1,4 @@
+```yaml
 name: CI
 
 on:
@@ -24,52 +25,100 @@ jobs:
       - name: Install system dependencies
         run: |
           sudo apt-get update
-          sudo apt-get install -y can-utils iproute2 kmod
+          sudo apt-get install -y can-utils iproute2 kmod curl
 
           sudo apt-get install -y "linux-modules-extra-$(uname -r)" || true
+
+          echo "Kernel version:"
+          uname -r
+
+          echo "Checking vcan module:"
+          find /lib/modules/$(uname -r) -name "vcan.ko*" || true
+
           sudo modprobe vcan
+
+          echo "vcan module loaded successfully."
 
       - name: Install Python dependencies
         run: |
-          python -m pip install --upgrade pip
+          python -m pip install --upgrade pip setuptools wheel
           pip install -r requirements.txt
 
       - name: Check Python syntax
         run: |
-          python -m compileall scripts
+          TARGETS=""
+          for dir in scripts src tests; do
+            if [ -d "$dir" ]; then
+              TARGETS="$TARGETS $dir"
+            fi
+          done
+
+          if [ -z "$TARGETS" ]; then
+            echo "No Python targets found."
+            exit 0
+          fi
+
+          python -m compileall $TARGETS
 
       - name: Lint with ruff
         run: |
-          ruff check scripts
+          TARGETS=""
+          for dir in scripts src tests; do
+            if [ -d "$dir" ]; then
+              TARGETS="$TARGETS $dir"
+            fi
+          done
+
+          if [ -z "$TARGETS" ]; then
+            echo "No lint targets found."
+            exit 0
+          fi
+
+          ruff check $TARGETS
+
+      - name: Make scripts executable
+        run: |
+          chmod +x scripts/*.sh || true
+          chmod +x scripts/openarm-can-cli || true
+          chmod +x scripts/*.py || true
 
       - name: Task 1 - verify mock CAN setup
         run: |
-          chmod +x scripts/verify_task1_mock.sh
-          chmod +x scripts/openarm-can-cli
-          ./scripts/verify_task1_mock.sh
+          mkdir -p artifacts
+          ./scripts/verify_task1_mock.sh | tee artifacts/task1_mock_output.txt
 
       - name: Task 2 - verify mock CAN-FD data stream
         run: |
-          chmod +x scripts/verify_task2_mock.sh
-          ./scripts/verify_task2_mock.sh
+          mkdir -p artifacts
+          ./scripts/verify_task2_mock.sh | tee artifacts/task2_mock_output.txt
 
-      # - name: Task 3 - test camera synchronization
-      #   run: |
-      #     pytest tests/test_task3_sync.py -q
+      - name: Task 3 - verify mock camera synchronization and OpenArm-style dataset
+        run: |
+          mkdir -p artifacts
+          ./scripts/verify_task3_mock.sh | tee artifacts/task3_mock_output.txt
 
-      # - name: Task 4 - test storage and API
-      #   run: |
-      #   pytest tests/test_task4_storage_api.py -q
+      - name: Task 4 - verify storage backend and REST API
+        run: |
+          mkdir -p artifacts
+          ./scripts/verify_task4_mock.sh | tee artifacts/task4_mock_output.txt
 
-      # - name: Run all unit tests
-      #   run: |
-      #     pytest tests -q
+      - name: Run tests if present
+        run: |
+          if [ -d tests ]; then
+            pytest tests -q
+          else
+            echo "No tests directory yet; skipping pytest."
+          fi
 
-      - name: Upload mock outputs
+      - name: Upload verification artifacts
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: mock-task-outputs
+          name: openarm-verification-artifacts
           path: |
-            data/
+            artifacts/
             mock_state/
+            data/*.zip
+            task*_output.txt
+          if-no-files-found: ignore
+```

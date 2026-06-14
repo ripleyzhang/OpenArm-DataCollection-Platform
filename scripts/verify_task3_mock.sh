@@ -61,5 +61,12 @@ if set(sample.cameras.keys()) != expected_cameras:
 print("Task 3 OpenArm Dataset API verification passed.")
 PY
 
+if [ "${KEEP_GENERATED_DATA:-0}" != "1" ]; then
+  echo
+  echo "===== Cleanup Task 3 generated dataset ====="
+  rm -rf data/openarm_mock_dataset
+  rm -f data/joint_states_mock.jsonl
+fi
+
 echo
 echo "===== Task 3 mock verification completed ====="
