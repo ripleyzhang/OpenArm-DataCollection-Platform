@@ -157,7 +157,6 @@ def create_app(dataset_root: str | Path | None = None) -> FastAPI:
         ]:
             for joint_index in range(1, 9):
                 joint_name = "J8_gripper" if joint_index == 8 else f"J{joint_index}"
-                t = time.time()
                 mock_states.append(
                     {
                         "host_received_ns": time.time_ns(),
